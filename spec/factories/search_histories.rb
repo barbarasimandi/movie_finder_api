@@ -1,6 +1,6 @@
 FactoryBot.define do
   factory :search_history do
-    query { "MyString" }
-    page { 1 }
+    query { Faker::Movie.title }
+    view_count { 1 }
   end
 end
