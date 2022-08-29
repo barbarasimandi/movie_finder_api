@@ -9,10 +9,11 @@ module Api
         if response[:errors].any?
           render json: response[:errors]
         else
-          @movies = response[:results].map do |movie_params|
-            Movie.create_from(movie_params)
+          movies = response[:results].map do |movie_params|
+            Movie.find_or_create_from(movie_params)
           end
-          render json: @movies
+
+          render json: MovieSerializer.new(movies).serializable_hash.merge(total_pages: response[:total_pages])
         end
       end
     end
