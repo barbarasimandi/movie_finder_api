@@ -9,13 +9,22 @@ module Api
         if response[:errors].any?
           render json: response[:errors]
         else
-          movies = response[:results].map do |movie_params|
-            Movie.find_or_create_from(movie_params)
+          movies = Rails.cache.fetch(cache_key) do
+            response[:results].map do |movie_params|
+              Movie.find_or_create_from(movie_params)
+            end
           end
 
           render json: MovieSerializer.new(movies).serializable_hash.merge(total_pages: response[:total_pages])
         end
       end
+
+      private
+
+      def cache_key
+        "#{params[:search]}/#{params.fetch(:page, 1)}"
+      end
+
     end
   end
 end
