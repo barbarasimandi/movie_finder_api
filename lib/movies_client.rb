@@ -12,6 +12,8 @@ class MoviesClient
     end
 
     def search(query, page)
+      return fallback_response if query.blank?
+
       response = get(search_url(query, page))
       handle_response(response)
     end
@@ -47,7 +49,8 @@ class MoviesClient
     def fallback_response
       {
         results: [],
-        total_pages: 0
+        total_pages: 0,
+        errors: []
       }
     end
 

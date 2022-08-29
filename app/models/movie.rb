@@ -10,7 +10,6 @@ class Movie < ApplicationRecord
            release_date: params[:release_date],
            vote_average: params[:vote_average],
            tmdb_id: params[:id],
-           genres: Genre.where(tmdb_id: params[:genre_ids])
-    )
+           genres: Genre.where(tmdb_id: params[:genre_ids]))
   end
 end
