@@ -28,14 +28,12 @@ ActiveRecord::Schema[7.0].define(version: 2022_08_29_104349) do
   end
 
   create_table "movies", force: :cascade do |t|
-    t.boolean "adult"
-    t.integer "tmdb_id"
     t.string "title"
     t.text "overview"
     t.string "poster_path"
     t.string "release_date"
     t.decimal "vote_average"
-    t.integer "vote_count"
+    t.integer "tmdb_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["tmdb_id"], name: "unique_tmdb_id", unique: true
