@@ -15,7 +15,7 @@ class SearchHistoryHandler
 
     if search_history && @page.zero?
       search_history.increment!(:view_count)
-    elsif @search.present?
+    elsif @search.present? && search_history.nil?
       SearchHistory.create(query: @search)
     end
   end
