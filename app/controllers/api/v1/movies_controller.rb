@@ -1,13 +1,11 @@
-require 'movies_client'
-
 module Api
   module V1
     class MoviesController < ApplicationController
       def index
-        SearchHistoryHandler.new(params[:search], params[:page]).call
+        SearchHistoryHandler.call(search_params)
 
         movies_response = Rails.cache.fetch(cache_key) do
-          MovieHandler.new(params[:search], params[:page]).call
+          MovieHandler.call(search_params)
         end
 
         render json: movies_response
@@ -17,6 +15,10 @@ module Api
 
       def cache_key
         "#{params[:search]}/#{params.fetch(:page, 0)}"
+      end
+
+      def search_params
+        params.permit(:search, :page)
       end
     end
   end

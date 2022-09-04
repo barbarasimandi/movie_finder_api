@@ -1,22 +1,27 @@
-class SearchHistoryHandler
-  def initialize(search, page)
-    @search = search
-    @page = page.to_i
+class SearchHistoryHandler < ApplicationService
+  attr_reader :query, :new_search
+
+  def initialize(options = {})
+    @query = options[:search]
+    @new_search = options[:page].to_i.zero?
   end
 
   def call
+    return unless query.present?
+    return unless new_search
+
     increment_or_create
   end
 
   private
 
   def increment_or_create
-    search_history = SearchHistory.find_by(query: @search)
+    search_history = SearchHistory.find_by(query: query)
 
-    if search_history && @page.zero?
+    if search_history
       search_history.increment!(:view_count)
-    elsif @search.present? && search_history.nil?
-      SearchHistory.create(query: @search)
+    else
+      SearchHistory.create(query: query)
     end
   end
 end

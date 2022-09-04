@@ -18,11 +18,9 @@ ActiveRecord::Schema[7.0].define(version: 2022_08_29_182622) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "genres_movies", force: :cascade do |t|
+  create_table "genres_movies", id: false, force: :cascade do |t|
     t.integer "movie_id"
     t.integer "genre_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
     t.index ["genre_id"], name: "index_genres_movies_on_genre_id"
     t.index ["movie_id"], name: "index_genres_movies_on_movie_id"
   end

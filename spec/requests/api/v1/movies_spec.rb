@@ -94,9 +94,14 @@ RSpec.describe "Api::V1::Movies", type: :request do
         let(:path) { api_v1_movies_path }
         let(:params) { { search: "", page: 1 } }
 
-        it "returns an empty array" do
-          movies = JSON.parse(response.body, symbolize_names: true)[:data]
-          expect(movies).to be_empty
+        it "doesn't return data array" do
+          movies = JSON.parse(response.body, symbolize_names: true)
+          expect(movies[:data]).to be_nil
+        end
+
+        it "returns errors" do
+          movies = JSON.parse(response.body, symbolize_names: true)
+          expect(movies[:errors]).to eq(["query must be provided"])
         end
       end
     end

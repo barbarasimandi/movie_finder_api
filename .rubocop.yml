@@ -5,6 +5,9 @@ AllCops:
     - bin/bundle
     - db/schema.rb
     - db/migrate/**
+Lint/MissingSuper:
+  Exclude:
+    - 'app/services/**/*'
 Style/StringLiterals:
   Enabled: false
 Style/Documentation:

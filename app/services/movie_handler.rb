@@ -1,9 +1,11 @@
 require 'movies_client'
 
-class MovieHandler
-  def initialize(search, page)
-    @search = search
-    @page = page.to_i.zero? ? 1 : page.to_i
+class MovieHandler < ApplicationService
+  attr_reader :search, :page
+
+  def initialize(options = {})
+    @search = options[:search]
+    @page = options[:page].to_i.zero? ? 1 : options[:page].to_i
   end
 
   def call
@@ -13,7 +15,7 @@ class MovieHandler
   private
 
   def find_or_create_movies
-    response = MoviesClient.search(@search, @page)
+    response = MoviesClient.search(search, page)
     return { errors: response[:errors] } if response[:errors].present?
 
     movies = response[:results].map do |tmdb_params|

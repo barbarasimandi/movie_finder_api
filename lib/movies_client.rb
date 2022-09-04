@@ -12,7 +12,7 @@ class MoviesClient
     end
 
     def search(query, page)
-      return fallback_response if query.blank?
+      return fallback_response if query.blank? && page.blank?
 
       response = get(search_url(query, page))
       handle_response(response)
@@ -28,7 +28,11 @@ class MoviesClient
     end
 
     def search_url(query, page)
-      "#{BASE_URL}/#{API_VERSION}/search/movie?query=#{query}&page=#{page}"
+      "#{BASE_URL}/#{API_VERSION}/search/movie?#{setup_query(query)}&page=#{page}"
+    end
+
+    def setup_query(query)
+      query.present? ? "query=#{query}" : 'query='
     end
 
     private
